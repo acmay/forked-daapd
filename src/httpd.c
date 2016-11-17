@@ -1329,6 +1329,7 @@ httpd_basic_auth(struct evhttp_request *req, char *user, char *passwd, char *rea
   if ((ret < 0) || (ret >= len))
     {
       httpd_send_error(req, HTTP_SERVUNAVAIL, "Internal Server Error");
+      free(header);
       return -1;
     }
 
@@ -1336,6 +1337,7 @@ httpd_basic_auth(struct evhttp_request *req, char *user, char *passwd, char *rea
   if (!evbuf)
     {
       httpd_send_error(req, HTTP_SERVUNAVAIL, "Internal Server Error");
+      free(header);
       return -1;
     }
 
