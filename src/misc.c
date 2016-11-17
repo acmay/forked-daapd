@@ -461,7 +461,8 @@ keyval_sort(struct keyval *kv)
   for (okv = kv->head; okv; okv = okv->next)
     kv->tail = okv;
 
-  DPRINTF(E_DBG, L_MISC, "Keyval sorted. New head: %s. New tail: %s.\n", kv->head->name, kv->tail->name);
+  DPRINTF(E_DBG, L_MISC, "Keyval sorted. New head: %s. New tail: %s.\n",
+          kv->head ? kv->head->name : "none", kv->tail->name);
 }
 
 
