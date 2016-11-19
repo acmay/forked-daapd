@@ -501,6 +501,12 @@ browse_resolve_callback(AvahiServiceResolver *r, AvahiIfIndex intf, AvahiProtoco
   if (! (rb_data && (rb_data->name = strdup(name)) && (rb_data->domain = strdup(domain))) )
     {
       DPRINTF(E_LOG, L_MDNS, "Out of memory\n");
+      if(rb_data)
+        {
+          free(rb_data->name);
+          free(rb_data->domain);
+        }
+      free(rb_data);
       goto out_free_resolver;
     }
 

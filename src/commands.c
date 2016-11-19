@@ -93,7 +93,8 @@ command_cb_sync(struct commands_base *cmdbase, struct command *cmd)
       // Command execution finished, execute the bottom half function
       if (cmd->ret == 0 && cmd->func_bh)
       {
-	cmdstate = cmd->func_bh(cmd->arg, &cmd->ret);
+        //Ignore return value
+	cmd->func_bh(cmd->arg, &cmd->ret);
       }
 
       // Signal the calling thread that the command execution finished
@@ -359,8 +360,10 @@ commands_exec_async(struct commands_base *cmdbase, command_function func, void *
   cmd->nonblock = 1;
 
   ret = send_command(cmdbase, cmd);
-  if (ret < 0)
+  if (ret < 0){
+    free(cmd);
     return -1;
+  }
 
   return 0;
 }

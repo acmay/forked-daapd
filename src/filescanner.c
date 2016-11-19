@@ -1028,7 +1028,7 @@ process_directory(char *path, int parent_id, int flags)
 	  free(deref);
 	  if ((ret < 0) || (ret >= sizeof(entry)))
 	    {
-	      DPRINTF(E_LOG, L_SCAN, "Skipping %s, PATH_MAX exceeded\n", deref);
+	      DPRINTF(E_LOG, L_SCAN, "Skipping file PATH_MAX exceeded\n");
 
 	      continue;
 	    }

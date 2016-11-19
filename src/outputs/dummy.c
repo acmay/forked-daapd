@@ -95,6 +95,8 @@ dummy_session_make(struct output_device *device, output_status_cb cb)
   if (!os || !ds)
     {
       DPRINTF(E_LOG, L_LAUDIO, "Out of memory for dummy session\n");
+      free(os);
+      free(ds);
       return NULL;
     }
 

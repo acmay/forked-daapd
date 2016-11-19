@@ -922,7 +922,6 @@ open_filter(struct filter_ctx *filter_ctx, AVCodecContext *dec_ctx, AVCodecConte
       if (!buffersrc || !buffersink)
 	{
 	  DPRINTF(E_LOG, L_XCODE, "Filtering source or sink element not found\n");
-	  ret = AVERROR_UNKNOWN;
 	  goto out_fail;
 	}
 
@@ -1339,6 +1338,7 @@ transcode_decode_setup_raw(void)
   if (!ctx->ifmt_ctx)
     {
       DPRINTF(E_LOG, L_XCODE, "Out of memory for decode format ctx\n");
+      free(ctx);
       return NULL;
     }
 
@@ -1348,6 +1348,8 @@ transcode_decode_setup_raw(void)
   if (!ctx->audio_stream)
     {
       DPRINTF(E_LOG, L_XCODE, "Could not create stream with PCM16 decoder\n");
+      avformat_free_context(ctx->ifmt_ctx);
+      free(ctx);
       return NULL;
     }
 
@@ -1524,7 +1526,6 @@ transcode_decode(struct decoded_frame **decoded, struct decode_ctx *ctx)
 	  // with empty input until no more frames are returned
 	  DPRINTF(E_DBG, L_XCODE, "Could not read packet, will flush decoders\n");
 
-	  used = 1;
 	  got_frame = flush_decoder(frame, &in_stream, &stream_index, ctx);
 	  if (got_frame)
 	    break;
@@ -1663,6 +1664,10 @@ transcode_raw2frame(uint8_t *data, size_t size)
   if (!decoded || !frame)
     {
       DPRINTF(E_LOG, L_XCODE, "Out of memory for decoded struct or frame\n");
+      free(decoded);
+      if(frame){
+        av_frame_free(&frame);
+      }
       return NULL;
     }
 
@@ -1682,6 +1687,7 @@ transcode_raw2frame(uint8_t *data, size_t size)
   if (ret < 0)
     {
       DPRINTF(E_LOG, L_XCODE, "Error filling frame with rawbuf: %s\n", err2str(ret));
+      transcode_decoded_free(decoded);
       return NULL;
     }
 

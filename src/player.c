@@ -1192,6 +1192,7 @@ source_open(struct queue_item *qii, uint64_t start_pos, int seek)
   if (ret < 0)
     {
       DPRINTF(E_LOG, L_PLAYER, "Failed to open '%s' (%s)\n", mfi->title, mfi->path);
+      free(ps);
       free_mfi(mfi, 0);
       return -1;
     }
