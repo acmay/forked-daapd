@@ -174,6 +174,8 @@ alsa_session_make(struct output_device *device, output_status_cb cb)
   if (!os || !as)
     {
       DPRINTF(E_LOG, L_LAUDIO, "Out of memory for ALSA session\n");
+      free(os);
+      free(as);
       return NULL;
     }
 

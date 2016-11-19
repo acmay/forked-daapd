@@ -1889,6 +1889,8 @@ raop_session_make(struct output_device *rd, int family, output_status_cb cb)
   if (!os || !rs)
     {
       DPRINTF(E_LOG, L_RAOP, "Out of memory for RAOP session\n");
+      free(os);
+      free(rs);
       return NULL;
     }
 
@@ -4038,7 +4040,8 @@ raop_device_cb(const char *name, const char *type, const char *domain, const cha
   if (!rd || !re)
     {
       DPRINTF(E_LOG, L_RAOP, "Out of memory for new AirPlay device\n");
-
+      free(rd);
+      free(re);
       return;
     }
 
