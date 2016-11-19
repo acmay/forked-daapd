@@ -225,6 +225,8 @@ fifo_session_make(struct output_device *device, output_status_cb cb)
   if (!output_session || !fifo_session)
     {
       DPRINTF(E_LOG, L_FIFO, "Out of memory for fifo session\n");
+      free(output_session);
+      free(fifo_session);
       return NULL;
     }
 
